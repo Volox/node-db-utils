@@ -1,0 +1,29 @@
+{
+  "name": "db-utils",
+  "version": "1.0.0",
+  "description": "Mongo DB utils",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Volox/node-db-utils"
+  },
+  "keywords": [
+    "mongo",
+    "utils",
+    "db"
+  ],
+  "author": "Riccardo Volonterio",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Volox/node-db-utils/issues"
+  },
+  "homepage": "https://github.com/Volox/node-db-utils",
+  "dependencies": {
+    "bluebird": "3.x",
+    "debug": "2.x",
+    "mongodb": "2.x"
+  },
+  "devDependencies": {
+    "eslint-config-volox": "*"
+  }
+}
