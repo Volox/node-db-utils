@@ -12,7 +12,7 @@ let MongoClient = require( 'mongodb' ).MongoClient;
 
 // Module variables declaration
 let db;
-let collectionMapping = {};
+let collectionMapping;
 
 // Module functions declaration
 function getCollection( name ) {
@@ -40,7 +40,7 @@ function connect( url, name, userCollectionMapping ) {
   .connect( dbUrl, connectionOptions )
   .tap( myDB => {
     db = myDB;
-    collectionMapping = userCollectionMapping;
+    collectionMapping = userCollectionMapping || {};
   } )
   .tap( () => debug( 'Connection opened' ) );
 }
@@ -84,6 +84,14 @@ function insert( collectionName, data ) {
     return collection.insertMany( data );
   }
 }
+function update( collectionName, filter, value ) {
+  let collection = getCollection( collectionName );
+
+  return collection
+  .updateOne( filter, {
+    $set: value,
+  } );
+}
 
 
 
@@ -105,6 +113,7 @@ module.exports.find = find;
 module.exports.aggregate = aggregate;
 
 module.exports.insert = insert;
+module.exports.update = update;
 
 
 //  50 6F 77 65 72 65 64  62 79  56 6F 6C 6F 78
