@@ -7,6 +7,9 @@
     "type": "git",
     "url": "https://github.com/Volox/node-db-utils"
   },
+  "scripts": {
+    "doc": "jsdoc -c jsdoc.json ."
+  },
   "keywords": [
     "mongo",
     "utils",
@@ -24,6 +27,7 @@
     "mongodb": "2.x"
   },
   "devDependencies": {
-    "eslint-config-volox": "*"
+    "eslint-config-volox": "*",
+    "jsdoc": "3.x"
   }
 }

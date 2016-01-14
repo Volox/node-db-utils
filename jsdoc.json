@@ -1,0 +1,13 @@
+{
+  "source": {
+    "include": [ "db.js", "README.md" ]
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "opts": {
+    "encoding": "utf8",
+    "destination": "./doc/",
+    "recurse": false
+  }
+}
