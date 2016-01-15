@@ -46,6 +46,7 @@ const DEFAULT_PIPELINE_OPTIONS = {
 class DB {
   /**
    * Creates a new instance of DB
+   * @constructor
    */
   constructor() {
     debug( 'DB created' );
@@ -122,6 +123,8 @@ class DB {
     return this.db.collections();
   }
   set mapping( collectionMapping ) {
+    debug( 'Set mappings to: %j', collectionMapping );
+
     for( let alias in collectionMapping ) {
       if( collectionMapping.hasOwnProperty( alias ) ) {
         let realName = collectionMapping[ alias ];
@@ -142,7 +145,7 @@ class DB {
 
   /**
    * Connects to the specified DB at the specified url
-   * @method
+   * @method connect
    * @param  {string} dbUrl - The url of the db to connect to
    * @param  {string} dbName - The name of the database to use
    * @param  {Object} [options=DEFAULT_CONNECT_OPTIONS] - The options to pass
@@ -170,7 +173,7 @@ class DB {
 
   /**
    * Closes the current connection
-   * @method
+   * @method disconnect
    * @return {Promise} Promise of completed disconnect
    */
   disconnect() {
@@ -187,8 +190,7 @@ class DB {
 
   /**
    * Get the collection real name
-   *
-   * @method
+   * @method getCollectionName
    * @param  {string} name - The name (or alias) of the collection
    * @return {string} - The real name of the collection (or the name param, if no alias is available)
    */
@@ -198,7 +200,7 @@ class DB {
 
   /**
    * Get the specified collection
-   *
+   * @method getCollection
    * @param  {string} name -  The name (or alias) of the collection
    * @return {Collection}      The MongoDB collection
    */
@@ -210,11 +212,11 @@ class DB {
 
 
 
-
+  // CRUD operations
 
   /**
    * Inserts new elements on the specified collection.
-   *
+   * @method indert
    * @param  {string} name - Collection name or alias
    * @param  {(Object|Object[])} data - The data to insert, can be either an object or an Array of Objects
    * @return {Promise}            Promise of completed insert
@@ -232,7 +234,7 @@ class DB {
 
   /**
    * Performs a find on the specified collection.
-   *
+   * @method find
    * @param  {string} name -  Collection name or alias
    * @param  {Object} [filter={}] - The filter to apply to the query
    * @param  {(Object|string[])} [fields={}] - The fields to return
@@ -268,7 +270,8 @@ class DB {
   }
 
   /**
-   * Count the number of elements matching a given filter
+   * Count the number of elements matching a given filter.
+   * @method count
    * @param  {string} name  - Collection name or alias
    * @param  {Object} [filter={}] The filter to apply to the query
    * @return {Promise<Number>}    Promise of number of elements
@@ -280,6 +283,7 @@ class DB {
 
   /**
    * Performs an update on the specified collection.
+   * @method update
    * @param  {string} name    Collection name or alias
    * @param  {Object} filter  How to select the document to update
    * @param  {Object} value   The update to perform
@@ -313,9 +317,9 @@ class DB {
     }
   }
 
-
   /**
    * Removes documents on the specified collection.
+   * @method remove
    * @param  {string} name    Collection name or alias
    * @param  {Object} filter  How to select the document to remove
    * @param  {bool} [multi=false]   Delete one or more elements.
@@ -337,8 +341,29 @@ class DB {
     }
   }
 
+
+
+
+  // Other operations
+
   /**
    * Perform an aggregation of the specified collection.
+   * @method indexes
+   * @param  {string} name     Collection name or alias
+   * @param  {Object[]} indexes The Array of index objects
+   * @return {Promise}        Promise of completed index creation
+   * @see {@link http://mongodb.github.io/node-mongodb-native/2.1/api/Collection.html#createIndexes|Collection#createIndexes} for more info.
+   */
+  indexes( name, indexes ) {
+    let collection = this.getCollection( name );
+
+    return collection.
+    createIndexes( indexes );
+  }
+
+  /**
+   * Perform an aggregation of the specified collection.
+   * @method aggregate
    * @param  {string} name     Collection name or alias
    * @param  {Array<Stages>} pipeline The pipeline to execute
    * @param  {Object} [options={allowDiskUse: true}]  The options to add to the aggregation pipeline
@@ -356,6 +381,7 @@ class DB {
 
   /**
    * Drops the specified collection.
+   * @method drop
    * @param  {string} name     Collection name or alias
    * @return {Promise}        Promise of completed drop
    */
@@ -368,6 +394,7 @@ class DB {
 
   /**
    * Drops the current database.
+   * @method dropDatabase
    * @return {Promise}        Promise of completed dropDatabase
    */
   dropDatabase() {
